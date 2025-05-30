@@ -1,4 +1,0 @@
-# VisionDesk
-
-# Overall technical route
-
