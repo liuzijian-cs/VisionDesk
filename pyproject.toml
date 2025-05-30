@@ -237,8 +237,8 @@ exclude_lines = [         # 从覆盖率报告中排除的行
     "raise NotImplementedError",
     "if 0:",
     "if __name__ == .__main__.:",
-    "class .*\bProtocol\):",
-    "@(abc\.)?abstractmethod",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
 ]
 
 # bandit安全分析配置
