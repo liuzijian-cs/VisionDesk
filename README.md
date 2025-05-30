@@ -27,6 +27,9 @@ pip install PySide6 -i https://mirrors.aliyun.com/pypi/simple
 - 日志系统： Python logging
 - 打包工具： PyInstaller
 
+# 测试
+- ruff
+
 
 
 # 项目结构
@@ -218,3 +221,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 # limitations under the License.
 
 ```
+
+# GenAI Declaration:
+- ChatGPT, Claude, Gemini and other AI tools were used to assist in writing code, documentation, and project structure.

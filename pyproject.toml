@@ -1,0 +1,271 @@
+# ==================== 构建系统配置 ====================
+[build-system]
+# 指定构建项目所需的工具和最低版本要求
+requires = ["setuptools>=61.0", "wheel"]
+# 指定用于构建项目的后端实现
+build-backend = "setuptools.build_meta"
+
+# ==================== 项目基础信息 ====================
+[project]
+# 项目名称(在PyPI上的包名)
+name = "visiondesk"
+# 版本号(遵循语义化版本规范)
+version = "0.1.0"
+# 项目简短描述
+description = "An intelligent desktop assistant that captures, analyses, and interprets visual content on your screen using AI"
+# 指定README文件用作长描述
+readme = "README.md"
+# 项目许可证信息
+license = {text = "Apache-2.0"}
+# 项目作者信息
+authors = [
+    {name = "刘子健_LiuZijian", email = "yourname@example.com"}
+]
+# 项目维护者信息
+maintainers = [
+    {name = "刘子健_LiuZijian", email = "yourname@example.com"}
+]
+# 项目关键字,用于PyPI搜索
+keywords = ["desktop", "ai", "vision", "assistant", "screenshot", "automation"]
+# 项目分类器,提供更多元数据给PyPI
+classifiers = [
+    "Development Status :: 1 - Planning",  # 项目发展阶段
+    "Intended Audience :: End Users/Desktop",  # 目标用户群体
+    "License :: OSI Approved :: Apache Software License",  # 许可证类型
+    "Operating System :: Microsoft :: Windows",  # 支持的操作系统
+    "Programming Language :: Python :: 3",  # 支持的Python版本
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Desktop Environment",  # 项目主题分类
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Multimedia :: Graphics :: Capture :: Screen Capture",
+]
+
+
+# 项目支持的Python最低版本
+requires-python = ">=3.12"
+
+# 核心依赖包列表(必需的依赖)
+dependencies = [
+    "PySide6>=6.6.0",           # GUI框架(Qt for Python)
+    "mss>=9.0.1",               # 高性能屏幕截图库
+    "Pillow>=10.0.0",           # 图像处理库
+    "openai>=1.3.0",            # OpenAI API集成
+    "aiohttp>=3.9.0",           # 异步HTTP客户端
+    "keyring>=24.0.0",          # 安全凭据存储
+    "cryptography>=41.0.0",     # 加密工具
+    "pydantic>=2.5.0",          # 数据验证和设置管理
+    "appdirs>=1.4.4",           # 跨平台应用目录管理
+    "psutil>=5.9.0",            # 系统和进程实用工具
+    "python-dotenv>=1.0.0",     # 环境变量管理
+]
+
+# ==================== 可选依赖配置 ====================
+[project.optional-dependencies]
+# 增强图像处理的额外依赖
+image-processing = [
+    "opencv-python>=4.8.0",     # 高级图像处理
+    "numpy>=1.24.0",            # 数值计算
+]
+
+# 包含所有可选功能的组合依赖组
+all = [
+    "visiondesk[image-processing]"
+]
+
+# 开发环境的额外依赖
+dev = [
+    # 测试工具
+    "pytest>=7.4.0",            # 测试框架
+    "pytest-cov>=4.1.0",        # 测试覆盖率
+    "pytest-asyncio>=0.21.0",   # 异步测试支持
+    "pytest-qt>=4.2.0",         # Qt应用程序测试
+    "pytest-mock>=3.12.0",      # 模拟测试
+
+    # 代码质量和格式化工具
+    "black>=23.0.0",            # 代码格式化
+    "isort>=5.12.0",            # import语句排序
+    "ruff>=0.1.6",              # 快速、全面的Python linter(替代flake8)
+    "mypy>=1.7.0",              # 静态类型检查
+
+    # 安全工具
+    "bandit>=1.7.0",            # 安全漏洞扫描
+    "safety>=2.3.0",            # 依赖安全检查
+
+    # 文档工具
+    "mkdocs>=1.5.0",            # 文档生成
+    "mkdocs-material>=9.4.0",   # 文档主题
+    "mkdocstrings[python]>=0.24.0", # Python文档字符串支持
+
+    # 构建和发布工具
+    "build>=1.0.0",             # 构建包
+    "twine>=4.0.0",             # 发布到PyPI
+    "bump2version>=1.0.0",      # 版本管理
+
+    # 预提交钩子
+    "pre-commit>=3.5.0",        # 预提交检查
+]
+
+# ==================== 项目URLs ====================
+[project.urls]
+# 项目相关链接
+Homepage = "https://github.com/liuzijian-cs/VisionDesk"
+#Documentation = "https://yourusername.github.io/VisionDesk"
+#Repository = "https://github.com/yourusername/VisionDesk"
+"Bug Tracker" = "https://github.com/liuzijian/VisionDesk/issues"
+#Changelog = "https://github.com/yourusername/VisionDesk/blob/main/CHANGELOG.md"
+
+# ==================== 入口点 ====================
+# 命令行入口点(在终端中运行)
+[project.scripts]
+visiondesk = "visiondesk.main:main"
+
+# GUI入口点(作为图形应用程序运行)
+[project.gui-scripts]
+visiondesk-gui = "visiondesk.main:main"
+
+# ==================== Setuptools配置 ====================
+[tool.setuptools]
+# 定义包目录结构,指定源代码位于src目录
+package-dir = {"" = "src"}
+
+# 自动发现包的配置
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["visiondesk*"]
+
+# 包含非Python文件的配置
+[tool.setuptools.package-data]
+"visiondesk.ui.resources" = ["icons/*", "styles/*", "translations/*"]
+
+# ==================== 开发工具配置 ====================
+# Black代码格式化器配置
+[tool.black]
+line-length = 88          # 每行最大长度
+target-version = ['py312'] # 目标Python版本
+include = '\.pyi?$'       # 包含的文件模式
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''                       # 排除的目录模式
+
+# isort导入排序工具配置
+[tool.isort]
+profile = "black"         # 使用black兼容的配置文件
+multi_line_output = 3     # 多行输出风格
+include_trailing_comma = true  # 包含尾随逗号
+force_grid_wrap = 0       # 强制网格包装阈值
+use_parentheses = true    # 在导入中使用括号
+ensure_newline_before_comments = true  # 确保注释前有换行
+line_length = 88          # 与black保持一致的行长度
+known_first_party = ["visiondesk"]  # 识别为第一方的包
+known_third_party = ["PySide6", "mss", "PIL", "openai"]  # 识别为第三方的包
+
+# mypy类型检查器配置
+[tool.mypy]
+python_version = "3.12"   # 目标Python版本
+warn_return_any = true    # 当函数返回Any时发出警告
+warn_unused_configs = true  # 对未使用的配置发出警告
+disallow_untyped_defs = true  # 不允许未键入的定义
+disallow_incomplete_defs = true  # 不允许不完整的定义
+check_untyped_defs = true  # 检查未类型化的定义
+disallow_untyped_decorators = true  # 不允许未类型化的装饰器
+no_implicit_optional = true  # 不允许隐式可选
+warn_redundant_casts = true  # 对冗余转换发出警告
+warn_unused_ignores = true  # 对未使用的忽略发出警告
+warn_no_return = true     # 对无返回值的函数发出警告
+warn_unreachable = true   # 对不可达代码发出警告
+strict_equality = true    # 严格相等检查
+
+# 为特定模块覆盖mypy设置
+[[tool.mypy.overrides]]
+module = [
+    "mss.*",              # 屏幕截图库
+    "PIL.*",              # Pillow图像处理库
+    "cv2.*",              # OpenCV库
+]
+ignore_missing_imports = true  # 忽略这些模块的导入错误
+
+# pytest测试框架配置
+[tool.pytest.ini_options]
+minversion = "7.0"        # 最低pytest版本要求
+addopts = [
+    "--strict-markers",   # 严格标记模式
+    "--strict-config",    # 严格配置模式
+    "--cov=src/visiondesk",  # 覆盖率测量范围
+    "--cov-report=term-missing:skip-covered",  # 终端覆盖率报告格式
+    "--cov-report=html",  # HTML覆盖率报告
+    "--cov-report=xml",   # XML覆盖率报告(用于CI集成)
+    "--cov-fail-under=80",  # 覆盖率低于80%时测试失败
+]
+testpaths = ["tests"]     # 测试文件路径
+python_files = ["test_*.py", "*_test.py"]  # 测试文件模式
+python_classes = ["Test*"]  # 测试类模式
+python_functions = ["test_*"]  # 测试函数模式
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",  # 慢速测试标记
+    "integration: marks tests as integration tests",  # 集成测试标记
+    "unit: marks tests as unit tests",  # 单元测试标记
+    "ui: marks tests as UI tests",  # UI测试标记
+]
+
+# 测试覆盖率配置
+[tool.coverage.run]
+source = ["src"]          # 源代码目录
+omit = [                  # 忽略的文件
+    "*/tests/*",
+    "*/test_*.py",
+    "src/visiondesk/__main__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [         # 从覆盖率报告中排除的行
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\bProtocol\):",
+    "@(abc\.)?abstractmethod",
+]
+
+# bandit安全分析配置
+[tool.bandit]
+exclude_dirs = ["tests", "build", "dist"]  # 排除的目录
+tests = ["B201", "B301"]  # 要运行的测试
+skips = ["B101", "B601"]  # 要跳过的测试
+
+# ruff代码检查配置(替代flake8,支持pyproject.toml)
+[tool.ruff]
+line-length = 88          # 行长度
+target-version = "py312"  # 目标Python版本
+select = [                # 启用的检查规则
+    "E",                  # pycodestyle错误
+    "F",                  # pyflakes错误
+    "I",                  # isort规则
+    "UP",                 # pyupgrade规则
+    "B",                  # flake8-bugbear规则
+    "C4",                 # flake8-comprehensions规则
+    "SIM",                # flake8-simplify规则
+    "ERA",                # eradicate规则
+    "PL",                 # pylint规则
+]
+ignore = [                # 忽略的规则
+    "E501",               # 行太长(由black处理)
+    "PLR0913",            # 太多参数
+]
+
+[tool.ruff.isort]         # ruff的isort配置
+known-first-party = ["visiondesk"]

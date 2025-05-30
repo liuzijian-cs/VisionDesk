@@ -59,7 +59,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -67,18 +67,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
-          pip install -e .
+          pip install -e ".[dev]"
 
-      # 使用 flake8 对代码进行静态检查（Lint），确保代码风格和质量
-      # flake8 是一个流行的 Python 代码风格检查工具，可以检测语法错误、不规范的代码风格和潜在的 bug
-      # 第一行命令：只统计严重错误（如语法错误、未定义变量等），并显示详细信息
-      # 第二行命令：统计所有问题，但不会因为发现问题而导致 CI 失败（exit-zero），并限制最大圈复杂度和最大行长度
-      - name: Lint with flake8
+      # 使用 ruff 对代码进行静态检查（Lint），确保代码风格和质量
+      # ruff 是一个快速的 Python 代码检查工具，可以替代 flake8，并支持更多功能
+      # 第一行命令：只检查严重错误（如语法错误、未定义变量等），并显示详细信息
+      # 第二行命令：检查所有问题，但不会因为发现问题而导致 CI 失败（exit-zero）
+      - name: Lint with ruff
         run: |
-          flake8 src tests --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 src tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+          ruff check src tests --select=E9,F63,F7,F82 --show-source
+          ruff check src tests --exit-zero
 
       # 使用 black 检查代码格式是否符合规范（不会自动修复，只检查）
       - name: Format check with black
@@ -143,17 +141,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install safety bandit
+        pip install -e ".[dev]"
 
     # 步骤4: 使用 safety 进行依赖安全检查
-    # safety check 命令会扫描当前 Python 环境中已安装的包（或通过 -r 指定需求文件）
-    # 并对照已知的漏洞数据库进行检查。
-    # 优化建议：为了更精确地检查项目依赖，可以考虑使用 `safety check -r requirements.txt`
-    # （如果 `requirements.txt` 包含了所有生产环境依赖）。
-    # 当前命令会检查环境中所有包，包括 `bandit` 和 `safety` 自身。
+    # safety check 命令会扫描当前 Python 环境中已安装的包，并对照已知的漏洞数据库进行检查。
+    # 使用从 pyproject.toml 安装的依赖进行检查
     - name: Security check with safety
       run: |
-        safety check -r requirements.txt
+        safety check
 
     # 步骤5: 使用 bandit 进行静态代码安全分析
     # bandit -r src/: 递归扫描 src/ 目录下的 Python 代码。
