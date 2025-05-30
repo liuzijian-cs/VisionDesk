@@ -21,37 +21,22 @@ This module provides the main entry function for the application, responsible fo
 creating and launching the App instance.
 """
 
-# import sys
-# import logging
-# from visiondesk.app import App
-# from visiondesk.utils.logger import setup_logger
-#
-#
-# def main() -> int:
-#     """
-#     VisionDesk 应用程序的主入口函数。
-#     Main entry function for the VisionDesk application.
-#
-#     返回:
-#         int: 应用程序的退出代码。0 表示成功退出。
-#     Returns:
-#         int: The application exit code. 0 indicates successful exit.
-#     """
-#     # 设置日志系统
-#     # Set up logging system
-#     setup_logger()
-#     logger = logging.getLogger(__name__)
-#
-#     try:
-#         logger.info("VisionDesk 应用程序启动 | VisionDesk application starting")
-#         app = App()
-#         return app.start()
-#     except Exception as e:
-#         logger.exception(f"应用程序发生未处理的异常: {e} | Unhandled exception in application: {e}")
-#         return 1
-#     finally:
-#         logger.info("应用程序退出 | Application exited")
-#
-#
-# if __name__ == "__main__":
-#     sys.exit(main())
+import sys
+from src.visiondesk.utils import setup_logging, get_logger
+
+def main() -> None:
+
+    # Logger:
+    setup_logging(
+        default_level="INFO",
+        use_emoji=True,
+        use_colors=True,
+        file_logging=True,
+        console_logging=True
+    )
+
+    logger = get_logger(__name__)
+    logger.info("🎇 Application starting... ")
+
+if __name__ == "__main__":
+    main()

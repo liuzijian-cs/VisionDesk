@@ -19,3 +19,34 @@ VisionDesk utility functions module.
 此模块包含应用程序中使用的各种工具函数和助手类。
 This module contains various utility functions and helper classes used throughout the application.
 """
+
+from .logger import (
+    setup_logging,
+    get_logger,
+    log_step_start,
+    log_step_complete,
+    log_phase_complete,
+    log_init,
+    log_config,
+    log_network,
+    log_ai,
+    log_screenshot,
+)
+
+__all__ = [
+    # 日志设置和获取函数
+    "setup_logging",
+    "get_logger",
+
+    # 步骤日志函数
+    "log_step_start",
+    "log_step_complete",
+    "log_phase_complete",
+
+    # 操作特定日志函数
+    "log_init",
+    "log_config",
+    "log_network",
+    "log_ai",
+    "log_screenshot",
+]

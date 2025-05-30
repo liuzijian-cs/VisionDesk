@@ -20,6 +20,10 @@ VisionDesk constants definition module.
 This module defines various constants used throughout the application.
 
 主要常量组:
+
+
+
+
 - APP_INFO: 应用程序信息常量
 - DEFAULT_SETTINGS: 默认设置常量
 - UI_CONSTANTS: UI 相关常量
@@ -32,5 +36,8 @@ Main constant groups:
 - ERROR_CODES: Error code constants
 """
 
-# TODO: 定义应用程序常量
-# TODO: Define application constants
+from pathlib import Path
+
+# 定义日志目录
+LOGS_DIR = Path.home() / ".visiondesk" / "logs"
+
