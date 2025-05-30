@@ -22,6 +22,7 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
+  workflow_dispatch:
 
 # 这部分定义了触发此工作流的事件。
   # push:
@@ -30,9 +31,15 @@ on:
     # branches: [ main, develop ]: 当有拉取请求 (Pull Request) 提交到 main 分支或 develop 分支时，此工作流也将被触发。
     # 这意味着在合并代码到这些关键分支之前，会自动进行检查。
 
+# 环境变量 - 设置为false可禁用CI
+# Environment variables - set to false to disable CI
+env:
+  CI_ENABLED: false
+
 jobs:
   # 这里定义了工作流中的一个或多个 "作业" (jobs)。这个工作流中有一个名为 test 的作业。
   test:
+    if: ${{ env.CI_ENABLED == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -117,6 +124,7 @@ jobs:
   # "security" 作业：专门用于执行代码安全相关的检查。
   security:
     needs: test
+    if: ${{ env.CI_ENABLED == 'true' }}
     # runs-on: 指定作业运行的虚拟环境类型。这里使用最新的 Ubuntu 系统。
     runs-on: ubuntu-latest
     # steps 定义了此作业中要执行的一系列任务。
@@ -133,7 +141,7 @@ jobs:
       with:
         python-version: '3.12'
 
-    # 步骤3: 安装安全检查相关的依赖
+    # ��骤3: 安装安全检查相���的依赖
     # 首先升级 pip 工具自身。
     # 然后安装 safety 和 bandit 这两个 Python 安全扫描工具。
     #   - safety: 用于检查项目依赖中是否存在已知的安全漏洞。
